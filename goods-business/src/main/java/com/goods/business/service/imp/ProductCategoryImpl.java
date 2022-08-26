@@ -2,28 +2,20 @@ package com.goods.business.service.imp;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.goods.business.converter.ProductConverter;
 import com.goods.business.mapper.ProductCategoryMapper;
 import com.goods.business.mapper.ProductMapper;
 import com.goods.business.service.ProductCategoryService;
-import com.goods.common.enums.system.UserTypeEnum;
-import com.goods.common.model.business.Product;
 import com.goods.common.model.business.ProductCategory;
-import com.goods.common.model.system.Department;
 import com.goods.common.utils.CategoryTreeBuilder;
 import com.goods.common.vo.business.ProductCategoryTreeNodeVO;
 import com.goods.common.vo.business.ProductCategoryVO;
-import com.goods.common.vo.system.DepartmentVO;
-import com.goods.common.vo.system.MenuNodeVO;
 import com.goods.common.vo.system.PageVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -79,7 +71,7 @@ public class ProductCategoryImpl implements ProductCategoryService {
             }
 
         }
-        List<ProductCategoryTreeNodeVO> build = CategoryTreeBuilder.buildParent(productCategoryVOS);
+        List<ProductCategoryTreeNodeVO> build = CategoryTreeBuilder.build(productCategoryVOS);
 
         return build;
     }

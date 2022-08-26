@@ -27,6 +27,8 @@ public class ProductVO {
     @NotBlank
     private String remark;
 
+    private Long stock;
+
     private Integer sort;
 
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
@@ -40,6 +42,8 @@ public class ProductVO {
 
     @NotNull(message = "分类不能为空")
     private Long[] categoryKeys;
+
+    private Long[] categorys;
 
     private Long oneCategoryId;
 

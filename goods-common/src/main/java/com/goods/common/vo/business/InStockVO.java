@@ -39,7 +39,7 @@ public class InStockVO {
     @NotBlank(message = "入库备注不能为空")
     private String remark;
 
-    private List<Object>products=new ArrayList<>();
+    private List<Object> products=new ArrayList<>();
 
     private Integer status;
 
