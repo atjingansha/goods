@@ -1,81 +1,118 @@
 package com.goods.controller.business;
 
-import com.github.pagehelper.IPage;
-import com.github.pagehelper.Page;
-import com.goods.business.service.ProductCategoryService;
+import com.goods.business.mapper.InStockInfoMapper;
+import com.goods.business.service.*;
+import com.goods.common.model.business.InStock;
+import com.goods.common.model.business.InStockInfo;
 import com.goods.common.model.business.Product;
-import com.goods.common.model.business.ProductCategory;
 import com.goods.common.response.ResponseBean;
-import com.goods.common.vo.business.ProductCategoryTreeNodeVO;
-import com.goods.common.vo.business.ProductCategoryVO;
-import com.goods.common.vo.business.ProductVO;
-import com.goods.common.vo.system.DepartmentVO;
+import com.goods.common.vo.business.*;
 import com.goods.common.vo.system.PageVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * @author WangJin
- * @create 2022-08-24 10:45
+ * @create 2022-08-25 8:32
  */
-@RequestMapping("/business/productCategory")
+@RequestMapping("/business/product")
 @RestController
 public class ProductController {
 
-
     @Autowired
-   private ProductCategoryService productCategoryService;
+    private ProductService productService;
+
+@Autowired
+private ProductStockService productStockService;
+
+@Autowired
+private InStockService inStockService;
+
+    @GetMapping("findProductList")
+    public ResponseBean findProductList(@RequestParam Integer pageNum,
+                                        @RequestParam Integer pageSize,
+                                       ProductVO productVO){
+
+        PageVO<ProductVO> productVOPageVO= productService.findProductList(pageNum,pageSize,productVO);
 
 
-
-    @GetMapping("categoryTree")
-    public ResponseBean findCategoryList(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                         @RequestParam(value = "pageSize") Integer pageSize,
-                                       ProductCategoryTreeNodeVO productCategoryTreeNodeVO){
-
-
-        PageVO<ProductCategoryTreeNodeVO> productCategoryServiceCategoryList = productCategoryService.findCategoryList(pageNum, pageSize, productCategoryTreeNodeVO);
-
-        return ResponseBean.success(productCategoryServiceCategoryList);
-
-
+        return ResponseBean.success(productVOPageVO);
     }
 
-    @GetMapping("getParentCategoryTree")
-    public ResponseBean getParentCategoryTree(){
-       List<ProductCategoryTreeNodeVO> productCategoryTreeNodeVOS= productCategoryService.getParentCategoryTree();
-
-       return ResponseBean.success(productCategoryTreeNodeVOS);
-    }
 
     @PostMapping("add")
-    public ResponseBean add(@RequestBody ProductCategoryVO productCategoryVO){
-        productCategoryService.add(productCategoryVO);
-
+    public ResponseBean add(@RequestBody ProductVO productVO) {
+        productService.add(productVO);
         return ResponseBean.success();
+
     }
 
-    @GetMapping("edit/{id}")
-    public ResponseBean edit(@PathVariable Long id){
 
-       ProductCategory productCategory= productCategoryService.edit(id);
-        return ResponseBean.success(productCategory);
+    @GetMapping("edit/{id}")
+    public ResponseBean edit(@PathVariable Integer id) {
+
+        Product product = productService.edit(id);
+        return ResponseBean.success(product);
     }
 
     @PutMapping("update/{id}")
-    public ResponseBean update(@PathVariable Long id,@RequestBody ProductCategoryVO productCategoryVO){
-       productCategoryService.update(id,productCategoryVO);
+    public ResponseBean update(@PathVariable Integer id, @RequestBody ProductVO productVO) {
+        productService.update(id, productVO);
+        return ResponseBean.success();
+
+    }
+
+    @PutMapping("remove/{id}")
+    public ResponseBean remove(@PathVariable Integer id){
+        productService.remove(id);
+
         return ResponseBean.success();
     }
 
-    @DeleteMapping("delete/{id}")
-    public ResponseBean delete(@PathVariable Long id){
-        productCategoryService.delete(id);
+
+    @PutMapping("back/{id}")
+    public ResponseBean back(@PathVariable Integer id){
+        productService.back(id);
 
         return ResponseBean.success();
+    }
+
+
+
+    @PutMapping("publish/{id}")
+    public ResponseBean publish(@PathVariable Integer id){
+        productService.publish(id);
+
+        return ResponseBean.success();
+    }
+
+    @GetMapping("findProducts")
+    public ResponseBean findProducts(@RequestParam(defaultValue = "1") Integer pageNum,
+                                     @RequestParam(defaultValue = "1") Integer pageSize,
+                                     ProductVO productVO){
+        PageVO<ProductVO> productVOPageVO= productService.findProducts(pageNum,pageSize,productVO);
+
+        return ResponseBean.success(productVOPageVO);
+    }
+
+
+    @GetMapping("findProductStocks")
+    public ResponseBean findProductStocks(@RequestParam(defaultValue = "1") Integer pageNum,
+                                      @RequestParam(defaultValue = "1") Integer pageSize,
+                                      ProductVO productVO){
+
+        PageVO<ProductVO>  pageVO=   productService.findProductStocks(pageNum,pageSize,productVO);
+
+        return ResponseBean.success(pageVO);
+    }
+
+    @GetMapping("findAllStocks")
+    public ResponseBean findAllStocks(@RequestParam(defaultValue = "1") Integer pageNum,
+                                      @RequestParam(defaultValue = "1") Integer pageSize){
+
+        PageVO<InStockVO>  pageVO=   inStockService.findAllStocks(pageNum,pageSize);
+
+        return ResponseBean.success(pageVO);
     }
 
 }
