@@ -49,6 +49,6 @@ public interface InStockService {
      */
     void publish(Integer id);
 
-    PageVO<InStockVO> findAllStocks(Integer pageNum, Integer pageSize);
+    List<ProductStockVO>  findAllStocks();
 
 }

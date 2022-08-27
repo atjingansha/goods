@@ -259,22 +259,30 @@ public class InStockServiceImpl implements InStockService {
     }
 
     @Override
-    public PageVO<InStockVO> findAllStocks(Integer pageNum, Integer pageSize) {
+    public  List<ProductStockVO>  findAllStocks() {
+
+        List<InStockInfo> inStockInfos = inStockInfoMapper.selectAll();
+
+        List<ProductStockVO> productStockVOList=new ArrayList<>();
+        for (InStockInfo inStockInfo : inStockInfos) {
+            ProductStockVO productStockVO=new ProductStockVO();
+
+            Example proExample=new Example(Product.class);
+            proExample.createCriteria().andEqualTo("pNum",inStockInfo.getPNum());
+            Product product = productMapper.selectOneByExample(proExample);
+
+            Long productNumber = Long.valueOf(inStockInfo.getProductNumber());
 
 
-        List<InStock> inStocks = inStockMapper.selectAll();
+            productStockVO.setName(product.getName());
+            productStockVO.setStock(productNumber);
 
-        List<InStockVO> inStockVOS=new ArrayList<>();
-        for (InStock inStock : inStocks) {
-            InStockVO inStockVO=new InStockVO();
-
-            inStockVO.setProductNumber(inStock.getProductNumber());
-            inStockVOS.add(inStockVO);
+            productStockVOList.add(productStockVO);
         }
 
-        PageInfo pageInfo=new PageInfo(inStocks);
 
-        return  new PageVO<>(pageInfo.getTotal(),inStockVOS);
+  return productStockVOList;
+
 
     }
 }

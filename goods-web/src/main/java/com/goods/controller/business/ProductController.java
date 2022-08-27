@@ -11,6 +11,8 @@ import com.goods.common.vo.system.PageVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @author WangJin
  * @create 2022-08-25 8:32
@@ -107,10 +109,9 @@ private InStockService inStockService;
     }
 
     @GetMapping("findAllStocks")
-    public ResponseBean findAllStocks(@RequestParam(defaultValue = "1") Integer pageNum,
-                                      @RequestParam(defaultValue = "1") Integer pageSize){
+    public ResponseBean findAllStocks(){
 
-        PageVO<InStockVO>  pageVO=   inStockService.findAllStocks(pageNum,pageSize);
+        List<ProductStockVO>  pageVO=   inStockService.findAllStocks();
 
         return ResponseBean.success(pageVO);
     }

@@ -1,5 +1,6 @@
 package com.goods.common.model.business;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.GeneratedValue;
@@ -19,8 +20,10 @@ public class Consumer {
 
     private String address;
 
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date modifiedTime;
 
     private String phone;
